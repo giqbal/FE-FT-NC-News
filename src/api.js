@@ -9,5 +9,9 @@ export const getArticlePageById = (id) => {
 }
 
 export const getCommentsforArticle = (id) => {
-    return axios.get(`https://northcoders-news-prod.herokuapp.com/api/articles/${id}/comments`)
+    return axios.get(`https://northcoders-news-prod.herokuapp.com/api/articles/${id}/comments`);
+}
+
+export const getUserProfile = (username) => {
+    return axios.get(`https://northcoders-news-prod.herokuapp.com/api/users/${username}`);
 }

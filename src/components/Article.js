@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import CommentBox from './CommentBox';
+import {Link} from 'react-router-dom';
 import * as api from '../api';
 
 class Article extends Component {
@@ -25,6 +26,7 @@ class Article extends Component {
             <section>
                 <h2>{article.title}</h2>
                 <h4>Posted in: {article.belongs_to}</h4>
+                <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                 <p>{article.body}</p>
                 <p>⬆️ {article.votes} ⬇️</p>
                 <p>----------💬----------</p>
