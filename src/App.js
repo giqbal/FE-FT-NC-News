@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import ArticleBox from './components/ArticleBox';
+import Article from './components/Article';
+import NavBar from './components/NavBar';
+import {Route} from 'react-router-dom';
+import * as api from './api';
 import './App.css';
 
 class App extends Component {
+  state = {
+    articles: []
+  }
+
+  componentDidMount() {
+    api.getArticles()
+      .then(({data: {articles}}) => {
+        this.setState({
+          articles
+        })
+      })
+      .catch(console.log)
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className='App'>
+        <h1>Northcoders News</h1>
+        <NavBar />
+        <Route exact path='/' render={() => <Articles articles={this.state.articles}/>}/>
+        <Route path='/article/:article_id' component={Article}/>
       </div>
     );
   }
+}
+
+function Articles({articles}) {
+  return articles.map(article => <ArticleBox key={article._id} article={article} />)
 }
 
 export default App;

@@ -13,7 +13,7 @@
 ## Setup
 - Create your app directory (e.g. with create-react-app)
 - Run your app
--Git init (unless cloned!), gitignore config, make an initial commit
+- Git init (unless cloned!), gitignore config, make an initial commit
 - Ensure you have React DevTools running
 
 ## Static
