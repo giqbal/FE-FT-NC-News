@@ -11,14 +11,7 @@ import './App.css';
 class App extends Component {
   state = {
     articles: [],
-    topics: [],
-    currentUser: {
-      _id: "5b2fd6a218d352ff5dd978c8",
-      username: "weegembump",
-      name: "Gemma Bump",
-      avatar_url: "http://www.upandrunning.co.uk/media/catalog/product/cache/1/image/650x/040ec09b1e35df139433887a97daa66f/m/r/mr-bump.jpg",
-      __v: 0
-    }
+    topics: []
     }
   
 

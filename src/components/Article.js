@@ -23,7 +23,7 @@ class Article extends Component {
         return (
             <section>
                 <h2>{article.title}</h2>
-                <h4>Posted in: {article.belongs_to}</h4>
+                <h4>Posted in: <Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></h4>
                 <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>

@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
+import UserSignIn from './UserSignIn';
 import {Link} from 'react-router-dom'
 import {debounce} from 'lodash';
+import * as api from '../api';
 
 class NavBar extends Component {
     state = {
         searchInput: '',
-        searchResults: []
+        searchResults: [],
+        currentUser: {},
     }
     render() {
         return (
             <div>
                 <a href='http://localhost:3000/'><h1>Northcoders News</h1></a>
                 <div>
-                    <input placeholder='🔍 Articles & Topics' value={this.state.searchInput} onChange={this.handleSearchInput}/>
+                    <input placeholder='🔍 Articles & Topics' id='searchInput' value={this.state.searchInput} onChange={this.handleSearchInput}/>
                     {this.state.searchResults.map(result => <div key={result._id} onClick={this.clearSearchInput}><Link to={`/${result.itemType}/${result.itemType === 'article'? result._id : result.slug}`}>{`${result.itemType}: ${result.title}`}</Link></div>)}
-                </div>  
+                </div>
+                <UserSignIn currentUser={this.state.currentUser} login={this.login} handleLogout={this.handleLogout} />
             </div>
         );
     }
@@ -49,6 +53,23 @@ class NavBar extends Component {
             searchInput: '',
             searchResults: []
         })
+    }
+
+    handleLogout = () => {
+        this.setState({
+            currentUser: {}
+        })
+    }
+
+    login = (username) => {
+        return api.getUserProfile(username)
+            .then(({data: {user}}) => {
+                if (user) {
+                    this.setState({
+                        currentUser: user,
+                    });
+                } else throw {message: 'Incorrect username'}
+            })
     }
 }
 
