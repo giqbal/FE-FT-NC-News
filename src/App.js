@@ -35,16 +35,29 @@ class App extends Component {
       <div className='App'>
         <Link to='/'><h1>Northcoders News</h1></Link>
         <NavBar />
-        <Route exact path='/' render={() => <Articles articles={this.state.articles}/>}/>
+        <Route exact path='/' render={() => <Articles articles={this.state.articles} updateArticleVote={this.updateArticleVote}/>}/>
         <Route path='/article/:article_id' component={Article}/>
         <Route path='/user/:username' render={(props) => <UserProfile {...props} articles={this.state.articles}/>}/>
       </div>
     );
   }
+
+  updateArticleVote = (articleId, vote) => {
+    api.updateVoteCount(articleId, vote, 'articles')
+        .then(({data: {article}}) => {
+          const updatedArticles = this.state.articles.map((existingArticle) => {
+            return article._id === existingArticle._id? {...existingArticle, votes: article.votes}: existingArticle
+          });
+          this.setState({
+              articles: updatedArticles
+          })
+        })
+        .catch(console.log)
+  }
 }
 
-function Articles({articles}) {
-  return articles.map(article => <ArticleBox key={article._id} article={article} />)
+function Articles({articles, updateArticleVote}) {
+  return articles.map(article => <ArticleBox key={article._id} article={article} updateArticleVote={updateArticleVote}/>)
 }
 
 export default App;
