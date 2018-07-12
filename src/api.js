@@ -1,21 +1,22 @@
 import axios from 'axios';
+const apiUrl = 'https://northcoders-news-prod.herokuapp.com/api';
 
 export const getArticles = () => {
-    return axios.get('https://northcoders-news-prod.herokuapp.com/api/articles');
+    return axios.get(`${apiUrl}/articles`);
 }
 
 export const getArticlePageById = (id) => {
-    return Promise.all([axios.get(`https://northcoders-news-prod.herokuapp.com/api/articles/${id}`), getCommentsforArticle(id)]);
+    return Promise.all([axios.get(`${apiUrl}/articles/${id}`), getCommentsforArticle(id)]);
 }
 
 export const getCommentsforArticle = (id) => {
-    return axios.get(`https://northcoders-news-prod.herokuapp.com/api/articles/${id}/comments`);
+    return axios.get(`${apiUrl}/articles/${id}/comments`);
 }
 
 export const getUserProfile = (username) => {
-    return axios.get(`https://northcoders-news-prod.herokuapp.com/api/users/${username}`);
+    return axios.get(`${apiUrl}/users/${username}`);
 }
 
 export const updateVoteCount = (id, vote, voteFor) => {
-    return axios.put(`https://northcoders-news-prod.herokuapp.com/api/${voteFor}/${id}?vote=${vote}`);
+    return axios.put(`${apiUrl}/${voteFor}/${id}?vote=${vote}`);
 }

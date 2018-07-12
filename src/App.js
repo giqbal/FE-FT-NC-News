@@ -33,8 +33,8 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <Link to='/'><h1>Northcoders News</h1></Link>
-        <NavBar />
+        <a href='http://localhost:3000/'><h1>Northcoders News</h1></a>
+        <NavBar articles={this.state.articles}/>
         <Route exact path='/' render={() => <Articles articles={this.state.articles} updateArticleVote={this.updateArticleVote}/>}/>
         <Route path='/article/:article_id' component={Article}/>
         <Route path='/user/:username' render={(props) => <UserProfile {...props} articles={this.state.articles}/>}/>
