@@ -20,6 +20,7 @@ class Article extends Component {
 
     render() {
         const article = this.state.article
+        const sortedCommentsByTime = [...this.state.comments].sort((a, b) => b.created_at - a.created_at);
         return (
             <section>
                 <h2>{article.title}</h2>
@@ -28,7 +29,7 @@ class Article extends Component {
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
                 <p>----------💬----------</p>
-                {this.state.comments.map(comment => <CommentBox key={comment._id} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
+                {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </section>
         );
     }
