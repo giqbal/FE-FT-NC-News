@@ -20,3 +20,11 @@ export const getUserProfile = (username) => {
 export const updateVoteCount = (id, vote, voteFor) => {
     return axios.put(`${apiUrl}/${voteFor}/${id}?vote=${vote}`);
 }
+
+export const getTopics = () => {
+    return axios.get(`${apiUrl}/topics`);
+}
+
+export const getArticlesByTopic = (topicSlug) => {
+    return axios.get(`${apiUrl}/topics/${topicSlug}/articles`);
+}

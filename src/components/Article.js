@@ -11,14 +11,11 @@ class Article extends Component {
     }
 
     componentDidMount() {
-        api.getArticlePageById(this.props.match.params.article_id)
-            .then(([{data: {article}}, {data: {comments}}]) => {
-                this.setState({
-                    article,
-                    comments
-                })
-            })
-            .catch(console.log)
+        this.fetchArticle();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) this.fetchArticle();
     }
 
     render() {
@@ -54,6 +51,17 @@ class Article extends Component {
                     comments: updatedComments
                 })
             })
+    }
+
+    fetchArticle = () => {
+        api.getArticlePageById(this.props.match.params.article_id)
+            .then(([{data: {article}}, {data: {comments}}]) => {
+                this.setState({
+                    article,
+                    comments
+                })
+            })
+            .catch(console.log)
     }
 }
 

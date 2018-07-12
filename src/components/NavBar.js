@@ -10,10 +10,10 @@ class NavBar extends Component {
     render() {
         return (
             <div>
-                <div>Topics</div>
+                <a href='http://localhost:3000/'><h1>Northcoders News</h1></a>
                 <div>
-                    <input placeholder='🔍 Articles' value={this.state.searchInput} onChange={this.handleSearchInput}/>
-                    {this.state.searchResults.map(result => <div key={result._id} onClick={this.clearSearchInput}><Link to={`/article/${result._id}`}>{result.title}</Link></div>)}
+                    <input placeholder='🔍 Articles & Topics' value={this.state.searchInput} onChange={this.handleSearchInput}/>
+                    {this.state.searchResults.map(result => <div key={result._id} onClick={this.clearSearchInput}><Link to={`/${result.itemType}/${result.itemType === 'article'? result._id : result.slug}`}>{`${result.itemType}: ${result.title}`}</Link></div>)}
                 </div>  
             </div>
         );
@@ -27,13 +27,15 @@ class NavBar extends Component {
     }
 
     search = debounce(searchTerm => {
-        const searchResults = this.props.articles.reduce((acc, article) => {
+        const {articles, topics} = this.props;
+        const objsToSearch = articles.concat(topics)
+        const searchResults = objsToSearch.reduce((acc, current) => {
             if (
                 searchTerm.length &&
-                (article.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                article.body.toLowerCase().includes(searchTerm.toLocaleLowerCase()))
+                (current.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                (current.body && current.body.toLowerCase().includes(searchTerm.toLocaleLowerCase())))
             ) {
-                acc.push(article);
+                acc.push({...current, itemType: current.body? 'article': 'topic'});
             }
             return acc;
         }, [])
