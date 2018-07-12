@@ -11,6 +11,7 @@ import './App.css';
 class App extends Component {
   state = {
     articles: [],
+    currentUser: {},
     topics: []
     }
   
@@ -36,7 +37,7 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        <NavBar articles={this.state.articles} topics={this.state.topics}/>
+        <NavBar login={this.login} logout={this.logout} currentUser={this.state.currentUser} articles={this.state.articles} topics={this.state.topics}/>
         <Route exact path='/' render={() => <Articles articles={this.state.articles} updateArticleVote={this.updateArticleVote}/>}/>
         <Route path='/article/:article_id' component={Article}/>
         <Route path='/user/:username' render={(props) => <UserProfile {...props} articles={this.state.articles}/>}/>
@@ -56,6 +57,23 @@ class App extends Component {
           })
         })
         .catch(console.log)
+  }
+
+  login = (username) => {
+    return api.getUserProfile(username)
+        .then(({data: {user}}) => {
+            if (user) {
+                this.setState({
+                    currentUser: user,
+                });
+            } else throw {message: 'Incorrect username'};
+        })
+  }
+
+  logout = () => {
+    this.setState({
+        currentUser: {}
+    })
   }
 }
 

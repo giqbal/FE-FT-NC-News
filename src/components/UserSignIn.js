@@ -8,19 +8,19 @@ class UserSignIn extends Component {
         loginErrorVisible: false
     }
     render() {
-        const {currentUser, handleLogout} = this.props;
+        const {currentUser, logout} = this.props;
         return (
             currentUser.username?
                 <div>
                     <img src={currentUser.avatar_url} alt='User avatar'/>
                     <Link to={`/user/${currentUser.username}`}>{currentUser.username}</Link>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button onClick={logout}>Logout</button>
                 </div> :
                 <div >
                     <p onClick={this.handleSignIn}>Sign In</p>
                     {this.state.signInVisible && <input type='text' id='usernameInput' value={this.state.usernameInput} placeholder='username' onChange={this.handleUsernameInput} onKeyUp={this.signInRequestByEnterKey} />}
                     {this.state.signInVisible && <button onClick={this.signInRequestByButton}>Sign In</button>}
-                    {this.state.loginErrorVisible && <p>Incorrect username</p>}
+                    {this.state.signInVisible && this.state.loginErrorVisible && <p>Incorrect username</p>}
                 </div>
                 
         );
