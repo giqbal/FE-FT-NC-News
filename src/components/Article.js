@@ -7,7 +7,8 @@ import * as api from '../api';
 class Article extends Component {
     state = {
         article: {},
-        comments: []
+        comments: [],
+        commentInput: ''
     }
 
     componentDidMount() {
@@ -19,9 +20,9 @@ class Article extends Component {
     }
 
     render() {
-        const article = this.state.article
+        const {article, commentInput, comments} = this.state
         const {currentUser} = this.props;
-        const sortedCommentsByTime = [...this.state.comments].sort((a, b) => b.created_at - a.created_at);
+        const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         return (
             <section>
                 <h2>{article.title}</h2>
@@ -30,6 +31,8 @@ class Article extends Component {
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
                 <p>----------💬----------</p>
+                {currentUser.username && <input type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
+                {currentUser.username && <button onClick={() => this.postComment(commentInput)}>Share your thoughts</button>}
                 {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </section>
         );
@@ -67,6 +70,30 @@ class Article extends Component {
                 }
             })
             .catch(console.log)
+    }
+
+    postComment = (commentBody) => {
+        api.postComment(this.state.article._id, commentBody, this.props.currentUser._id)
+            .then(({status}) => {
+                if (status === 201) {
+                    return api.getCommentsforArticle(this.state.article._id)
+                }
+            })
+            .then(({data: {comments}}) => {
+                if (comments) {
+                    this.setState({
+                        commentInput: '',
+                        comments
+                    })
+                }
+            })
+            .catch(console.log)
+    }
+
+    handleCommentInput = ({target}) => {
+        this.setState({
+            commentInput: target.value
+        })
     }
 
     fetchArticle = () => {

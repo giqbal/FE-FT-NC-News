@@ -32,3 +32,10 @@ export const getArticlesByTopic = (topicSlug) => {
 export const deleteComment = (commentId) => {
     return axios.delete(`${apiUrl}/comments/${commentId}`);
 }
+
+export const postComment = (articleId, body, created_by) => {
+    return axios.post(`${apiUrl}/articles/${articleId}/comments`, {
+        body,
+        created_by
+    })
+}
