@@ -11,8 +11,7 @@ import './App.css';
 class App extends Component {
   state = {
     articles: [],
-    currentUser: {},
-    topics: []
+    currentUser: {}
     }
   
 
@@ -24,22 +23,14 @@ class App extends Component {
         })
       })
       .catch(console.log);
-    
-    api.getTopics()
-      .then(({data: {topics}}) => {
-        this.setState({
-          topics
-        })
-      })
-      .catch(console.log)
   }
 
   render() {
     return (
       <div className='App'>
-        <NavBar login={this.login} logout={this.logout} currentUser={this.state.currentUser} articles={this.state.articles} topics={this.state.topics}/>
+        <NavBar login={this.login} logout={this.logout} currentUser={this.state.currentUser} articles={this.state.articles}/>
         <Route exact path='/' render={() => <Articles articles={this.state.articles} updateArticleVote={this.updateArticleVote}/>}/>
-        <Route path='/article/:article_id' component={Article}/>
+        <Route path='/article/:article_id' render={(props) => <Article {...props} currentUser={this.state.currentUser}/>}/>
         <Route path='/user/:username' render={(props) => <UserProfile {...props} articles={this.state.articles}/>}/>
         <Route path='/topic/:topicSlug' render={(props) => <TopicArticles {...props}/>}/>
       </div>

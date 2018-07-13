@@ -20,6 +20,7 @@ class Article extends Component {
 
     render() {
         const article = this.state.article
+        const {currentUser} = this.props;
         const sortedCommentsByTime = [...this.state.comments].sort((a, b) => b.created_at - a.created_at);
         return (
             <section>
@@ -29,7 +30,7 @@ class Article extends Component {
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
                 <p>----------💬----------</p>
-                {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
+                {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </section>
         );
     }
@@ -52,6 +53,20 @@ class Article extends Component {
                     comments: updatedComments
                 })
             })
+            .catch(console.log)
+    }
+
+    deleteComment = (commentId) => {
+        api.deleteComment(commentId)
+            .then(({status}) => {
+                if (status === 204) {
+                    const updatedComments = this.state.comments.filter(comment => comment._id !== commentId);
+                    this.setState({
+                        comments: updatedComments
+                    })
+                }
+            })
+            .catch(console.log)
     }
 
     fetchArticle = () => {

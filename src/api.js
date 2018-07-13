@@ -28,3 +28,7 @@ export const getTopics = () => {
 export const getArticlesByTopic = (topicSlug) => {
     return axios.get(`${apiUrl}/topics/${topicSlug}/articles`);
 }
+
+export const deleteComment = (commentId) => {
+    return axios.delete(`${apiUrl}/comments/${commentId}`);
+}
