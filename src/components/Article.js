@@ -39,7 +39,7 @@ class Article extends Component {
     }
 
     updateArticleVote = (vote) => {
-        api.updateVoteCount(this.state.article._id, vote, 'articles')
+        this.props.currentUser.username && api.updateVoteCount(this.state.article._id, vote, 'articles')
             .then(({data: {article}}) => {
                 this.setState({
                     article
@@ -49,7 +49,7 @@ class Article extends Component {
     }
 
     updateCommentVote = (commentId, vote) => {
-        api.updateVoteCount(commentId, vote, 'comments')
+        this.props.currentUser.username && api.updateVoteCount(commentId, vote, 'comments')
             .then(({data: {comment}}) => {
                 const updatedComments = this.state.comments.map((existingComment) => comment._id === existingComment._id? comment: existingComment);
                 this.setState({

@@ -3,7 +3,7 @@ import moment from 'moment';
 import Vote from './Vote';
 import {Link} from 'react-router-dom';
 
-const CommentBox = ({comment, updateCommentVote, currentUser, deleteComment}) => {
+const CommentBox = ({comment, updateCommentVote, deleteComment, currentUser}) => {
     return (
         <div>
             {currentUser.username === comment.created_by && <span onClick={() => deleteComment(comment._id)}>ⓧ</span>}

@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   updateArticleVote = (articleId, vote) => {
-    api.updateVoteCount(articleId, vote, 'articles')
+    this.state.currentUser.username && api.updateVoteCount(articleId, vote, 'articles')
         .then(({data: {article}}) => {
           const updatedArticles = this.state.articles.map((existingArticle) => {
             return article._id === existingArticle._id? {...existingArticle, votes: article.votes}: existingArticle
