@@ -23,6 +23,9 @@ class App extends Component {
         })
       })
       .catch(console.log);
+
+    const currentUser = JSON.parse(localStorage.getItem('userLoggedIn'));
+    if (currentUser) this.setState({currentUser});
   }
 
   render() {
@@ -54,14 +57,16 @@ class App extends Component {
     return api.getUserProfile(username)
         .then(({data: {user}}) => {
             if (user) {
-                this.setState({
-                    currentUser: user,
-                });
+              localStorage.setItem('userLoggedIn', JSON.stringify(user))
+              this.setState({
+                currentUser: user,
+              });
             } else throw {message: 'Incorrect username'};
         })
   }
 
   logout = () => {
+    localStorage.removeItem('userLoggedIn')
     this.setState({
         currentUser: {}
     })
