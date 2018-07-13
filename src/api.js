@@ -39,3 +39,11 @@ export const postComment = (articleId, body, created_by) => {
         created_by
     })
 }
+
+export const postArticle = (topicSlug, title, body, created_by) => {
+    return axios.post(`${apiUrl}/topics/${topicSlug}/articles`, {
+         title,
+         body,
+         created_by
+    })
+}

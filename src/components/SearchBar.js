@@ -1,23 +1,11 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import {debounce} from 'lodash';
-import * as api from '../api';
 
 class SearchBar extends Component {
     state = {
         searchInput: '',
-        searchResults: [],
-        topics: []
-    }
-
-    componentDidMount() {
-        api.getTopics()
-            .then(({data: {topics}}) => {
-                this.setState({
-                    topics
-                })
-            })
-            .catch(console.log)
+        searchResults: []
     }
 
     render() {
@@ -37,8 +25,8 @@ class SearchBar extends Component {
     }
 
     search = debounce(searchTerm => {
-        const {articles} = this.props;
-        const objsToSearch = articles.concat(this.state.topics)
+        const {articles, topics} = this.props;
+        const objsToSearch = articles.concat(topics)
         const searchResults = objsToSearch.reduce((acc, current) => {
             if (
                 searchTerm.length &&
