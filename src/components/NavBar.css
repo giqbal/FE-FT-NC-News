@@ -1,0 +1,9 @@
+.nav-bar {
+    display: flex;
+    background-color: #f0c808;
+}
+
+#logo {
+    height: 64px;
+    width: auto;
+}

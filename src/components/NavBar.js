@@ -4,6 +4,8 @@ import SearchBar from './SearchBar';
 import NewArticleModal from './NewArticleModal';
 import {Link} from 'react-router-dom';
 import * as api from '../api';
+import './NavBar.css';
+import logo from '../logo.png';
 
 class NavBar extends Component {
     state = {
@@ -21,12 +23,12 @@ class NavBar extends Component {
         const {currentUser, login, logout} = this.props;
         const {postArticleModalVisible, topics, articlesData} = this.state;
         return (
-            <div>
+            <div className='nav-bar'>
                 {postArticleModalVisible && <NewArticleModal hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
-                <Link to='/'><h1>Northcoders News</h1></Link>
+                <Link to='/'><img id='logo' src={logo} alt='website logo' /></Link>
                 <SearchBar articles={articlesData} topics={topics}/>
-                <UserSignIn currentUser={currentUser} login={login} logout={logout} />
                 {currentUser.username && <p onClick={this.showPostArticleModal}>Post Article</p>}
+                <UserSignIn currentUser={currentUser} login={login} logout={logout} />
             </div>
         );
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import './UserSignIn.css';
 
 class UserSignIn extends Component {
     state = {
@@ -12,7 +13,7 @@ class UserSignIn extends Component {
         return (
             currentUser.username?
                 <div>
-                    <img src={currentUser.avatar_url} alt='User avatar'/>
+                    <img id='user-avatar' src={currentUser.avatar_url} alt='User avatar'/>
                     <Link to={`/user/${currentUser.username}`}>{currentUser.username}</Link>
                     <button onClick={logout}>Logout</button>
                 </div> :
