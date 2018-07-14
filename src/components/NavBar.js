@@ -1,17 +1,71 @@
-import React from 'react';
+import React, {Component} from 'react';
 import UserSignIn from './UserSignIn';
 import SearchBar from './SearchBar';
+import NewArticleModal from './NewArticleModal';
 import {Link} from 'react-router-dom';
+import * as api from '../api';
 
-const NavBar = ({currentUser, login, logout, articles, topics, postArticleModal}) => {
-    return (
-        <div>
-            <Link to='/'><h1>Northcoders News</h1></Link>
-            <SearchBar articles={articles} topics={topics}/>
-            <UserSignIn currentUser={currentUser} login={login} logout={logout} />
-            {currentUser.username && <p onClick={postArticleModal}>Post Article</p>}
-        </div>
-    );
+class NavBar extends Component {
+    state = {
+        postArticleModalVisible: false,
+        topics: [],
+        articlesData: []
+    }
+
+    componentDidMount() {
+        this.fetchTopics();
+        this.fetchArticlesData();
+    }
+
+    render() {
+        const {currentUser, login, logout} = this.props;
+        const {postArticleModalVisible, topics, articlesData} = this.state;
+        return (
+            <div>
+                {postArticleModalVisible && <NewArticleModal hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
+                <Link to='/'><h1>Northcoders News</h1></Link>
+                <SearchBar articles={articlesData} topics={topics}/>
+                <UserSignIn currentUser={currentUser} login={login} logout={logout} />
+                {currentUser.username && <p onClick={this.showPostArticleModal}>Post Article</p>}
+            </div>
+        );
+    }
+
+    showPostArticleModal = () => {
+        this.setState({
+          postArticleModalVisible: true
+        })
+    }
+    
+    hidePostArticleModal = () => {
+        this.setState({
+          postArticleModalVisible: false
+        })
+    }
+
+    fetchTopics = () => {
+        api.getTopics()
+            .then(({data: {topics}}) => {
+                this.setState({
+                    topics
+                })
+            })
+            .catch(console.log)
+    }
+
+    fetchArticlesData = () => {
+        api.getArticles()
+            .then(({data: {articles}}) => {
+                const articlesData = articles.map(article => {
+                    const {_id, title, body} = article;
+                    return {_id, title, body};
+                })
+                this.setState({
+                    articlesData
+                })
+        })
+        .catch(console.log);
+    }
 }
 
 export default NavBar;
