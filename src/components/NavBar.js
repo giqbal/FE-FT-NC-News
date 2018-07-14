@@ -24,16 +24,17 @@ class NavBar extends Component {
         const {postArticleModalVisible, topics, articlesData} = this.state;
         return (
             <div className='nav-bar'>
-                {postArticleModalVisible && <NewArticleModal hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
+                {postArticleModalVisible && <NewArticleModal enableModal={postArticleModalVisible} hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
                 <Link to='/'><img id='logo' src={logo} alt='website logo' /></Link>
                 <SearchBar articles={articlesData} topics={topics}/>
-                {currentUser.username && <p onClick={this.showPostArticleModal}>Post Article</p>}
+                {currentUser.username && <a className='button' onClick={this.showPostArticleModal}>Post Article</a>}
                 <UserSignIn currentUser={currentUser} login={login} logout={logout} />
             </div>
         );
     }
 
     showPostArticleModal = () => {
+        console.log('showing modal')
         this.setState({
           postArticleModalVisible: true
         })
