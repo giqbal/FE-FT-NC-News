@@ -4,18 +4,14 @@ import ArticleBox from './ArticleBox';
 
 class UserProfile extends Component {
     state = {
-        userProfile:{}
+        user: {},
+        userArticles: []
     }
     componentDidMount() {
-        api.getUserProfile(this.props.match.params.username)
-            .then(({data: {user}}) => {
-                this.setState({
-                    userProfile: user
-                })
-            })
+        this.fetchUserProfileData(this.props.match.params.username)
     }
     render() {
-        const user = this.state.userProfile
+        const {user, userArticles} = this.state
         
         return (
             <div>
@@ -26,13 +22,24 @@ class UserProfile extends Component {
                 </div>
                 <p>---------------------</p>
                 <div>
-                    {this.props.articles.reduce((acc, article) => {
-                        if (article.created_by === user.username) return acc.concat(<ArticleBox key={article._id} article={article}/>);
-                        return acc;
-                    }, [])}
+                    {userArticles.map(article => <ArticleBox key={article._id} article={article}/>)}
                 </div>
             </div>
         );
+    }
+
+    fetchUserProfileData = (username) => {
+        api.getUserProfile(username)
+            .then(({data: {user}}) => {
+                return Promise.all([user, api.getArticles()])
+            })
+            .then(([user, {data: {articles}}]) => {
+                this.setState({
+                    user,
+                    userArticles: articles.filter(article => article.created_by === user.username)
+                })
+            })
+            .catch(console.log)
     }
 }
 

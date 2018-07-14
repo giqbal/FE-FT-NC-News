@@ -21,23 +21,10 @@ class TopicArticles extends Component {
         return (
             <div>
                 <h2>{capitalisedTopic}</h2>
-                {this.state.articles.map(article => <ArticleBox key={article._id} article={article} updateArticleVote={this.updateArticleVote}/>)}
+                {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>
         );
     }
-
-    updateArticleVote = (articleId, vote) => {
-        api.updateVoteCount(articleId, vote, 'articles')
-            .then(({data: {article}}) => {
-              const updatedArticles = this.state.articles.map((existingArticle) => {
-                return article._id === existingArticle._id? {...existingArticle, votes: article.votes}: existingArticle
-              });
-              this.setState({
-                  articles: updatedArticles
-              })
-            })
-            .catch(console.log)
-      }
 
     fetchArticlesByTopic = () => {
         api.getArticlesByTopic(this.props.match.params.topicSlug)
