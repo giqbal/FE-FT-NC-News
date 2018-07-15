@@ -30,7 +30,7 @@ class Article extends Component {
                 <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
-                <p>----------💬----------</p>
+                <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
                 {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
                 {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
                 {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}

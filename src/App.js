@@ -42,8 +42,9 @@ class App extends Component {
               this.setState({
                 currentUser: user,
               });
-            } else throw {message: 'Incorrect username'};
+            }
         })
+        .catch(console.log)
   }
 
   logout = () => {
