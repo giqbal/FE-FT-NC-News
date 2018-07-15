@@ -10,9 +10,11 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <div className='navbar-item'>
+            <div className={this.state.searchResults.length? 'navbar-item has-dropdown is-active': 'navbar-item has-dropdown'}>
                 <input className='input' id='search-input' placeholder='🔍 Articles & Topics' value={this.state.searchInput} onChange={this.handleSearchInput}/>
-                {this.state.searchResults.map(result => <div key={result._id} onClick={this.clearSearchInput}><Link to={`/${result.itemType}/${result.itemType === 'article'? result._id : result.slug}`}>{`${result.itemType}: ${result.title.substr(0, 100)}...`}</Link></div>)}
+                <div className='navbar-dropdown'>
+                {this.state.searchResults.map(result => <div className='navbar-item' key={result._id} onClick={this.clearSearchInput}><Link to={`/${result.itemType}/${result.itemType === 'article'? result._id : result.slug}`}>{`${result.itemType}: ${result.title.substr(0, 100)}...`}</Link></div>)}
+                </div>
             </div>
         );
     }

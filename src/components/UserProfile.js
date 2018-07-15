@@ -15,16 +15,18 @@ class UserProfile extends Component {
         
         return (
             <div>
-                 <div>
-                    <figure className='image is-128x128'>
-                        <img src={user.avatar_url} alt='User avatar'/>
-                    </figure>
-                    <h2>Username: {user.username}</h2>
-                    <h4>Name: {user.name}</h4>
+                 <div className='card'>
+                    <div className='card-image'>
+                        <figure className='image is-square'>
+                            <img src={user.avatar_url} alt='User avatar'/>
+                        </figure>    
+                    </div>
+                    <div className='card-content'>
+                        <p className='title is-4'>{user.name}</p>
+                        <p className='title is-6'>@{user.username}</p>
+                    </div>
                 </div>
-                <div>
-                    {userArticles.map(article => <ArticleBox key={article._id} article={article}/>)}
-                </div>
+                {userArticles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>
         );
     }

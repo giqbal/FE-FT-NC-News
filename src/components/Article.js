@@ -26,13 +26,13 @@ class Article extends Component {
         return (
             <section className='content'>
                 <h2>{article.title}</h2>
-                <h4>Posted in: <Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></h4>
+                <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
                 <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                 <p>{article.body}</p>
                 <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
                 <p>----------💬----------</p>
-                {currentUser.username && <input type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
-                {currentUser.username && <button onClick={() => this.postComment(commentInput)}>Share your thoughts</button>}
+                {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
+                {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
                 {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </section>
         );

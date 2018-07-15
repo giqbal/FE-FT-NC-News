@@ -6,7 +6,7 @@ const ArticleBox = ({article}) => {
         <div className='box content'>
             <Link to={`/article/${article._id}`}>
                 <h3>{article.title}</h3>
-                <h4>Posted in: {article.belongs_to}</h4>
+                <span className='tag'>{article.belongs_to}</span>
                 <p>💬 {article.comments} Comments</p>
                 <p>{article.votes} Votes</p>
             </Link>

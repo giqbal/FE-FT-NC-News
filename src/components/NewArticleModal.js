@@ -19,7 +19,7 @@ class NewArticleModal extends Component {
             <Redirect to={`/article/${postedArticleId}`}/> :
             <div className={enableModal? 'modal is-active': 'modal'}>
                 <div className="modal-background"></div>
-                <div class="modal-card">
+                <div className="modal-card">
                 <header className="modal-card-head">
                     <p className="modal-card-title">What would you like to post?</p>
                     <button className="delete" onClick={hidePostArticleModal} aria-label="close"></button>

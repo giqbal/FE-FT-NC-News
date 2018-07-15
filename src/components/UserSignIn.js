@@ -21,9 +21,10 @@ class UserSignIn extends Component {
                 <div className="navbar-item has-dropdown is-hoverable">
                     <a className="dropdown-trigger navbar-item">
                         Sign In
+                        <i className="fas fa-angle-down" aria-hidden="true"></i>
                     </a>
                     <div className="navbar-dropdown is-right is-boxed">
-                        <label htmlfor='usernameInput'>Username</label>
+                        <label htmlFor='usernameInput'>Username</label>
                         <input className='input navbar-item' type='text' id='usernameInput' value={this.state.usernameInput} placeholder='username' onChange={this.handleUsernameInput} onKeyUp={this.signInRequestByEnterKey} />
                         <hr className="navbar-divider"/>
                         <a className='button navbar-item' onClick={this.signInRequestByButton}>Log In</a>
