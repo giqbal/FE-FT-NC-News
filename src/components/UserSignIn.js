@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import './UserSignIn.css';
 
 class UserSignIn extends Component {
     state = {
-        signInVisible: false,
         usernameInput: '',
         loginErrorVisible: false
     }
@@ -12,30 +10,32 @@ class UserSignIn extends Component {
         const {currentUser, logout} = this.props;
         return (
             currentUser.username?
-                <div>
-                    <img id='user-avatar' src={currentUser.avatar_url} alt='User avatar'/>
-                    <Link to={`/user/${currentUser.username}`}>{currentUser.username}</Link>
-                    <button onClick={logout}>Logout</button>
+                <div className='navbar-item'>
+                    <figure className='image is-32x32'>
+                        <Link to={`/user/${currentUser.username}`}>
+                            <img id='user-avatar' src={currentUser.avatar_url} alt='User avatar'/>
+                        </Link>
+                    </figure>
+                    <a className='button' onClick={logout}>Logout</a>
                 </div> :
-                <div >
-                    <p onClick={this.handleSignIn}>Sign In</p>
-                    {this.state.signInVisible && <input type='text' id='usernameInput' value={this.state.usernameInput} placeholder='username' onChange={this.handleUsernameInput} onKeyUp={this.signInRequestByEnterKey} />}
-                    {this.state.signInVisible && <button onClick={this.signInRequestByButton}>Sign In</button>}
-                    {this.state.signInVisible && this.state.loginErrorVisible && <p>Incorrect username</p>}
+                <div className="navbar-item has-dropdown is-hoverable">
+                    <a className="dropdown-trigger navbar-item">
+                        Sign In
+                    </a>
+                    <div className="navbar-dropdown is-right is-boxed">
+                        <label htmlfor='usernameInput'>Username</label>
+                        <input className='input navbar-item' type='text' id='usernameInput' value={this.state.usernameInput} placeholder='username' onChange={this.handleUsernameInput} onKeyUp={this.signInRequestByEnterKey} />
+                        <hr className="navbar-divider"/>
+                        <a className='button navbar-item' onClick={this.signInRequestByButton}>Log In</a>
+                        {this.state.loginErrorVisible && <p>Incorrect username</p>}
+                    </div>
                 </div>
-                
         );
     }
 
     handleUsernameInput = ({target}) => {
         this.setState({
             usernameInput: target.value
-        })
-    }
-
-    handleSignIn = () => {
-        this.setState({
-            signInVisible: this.state.signInVisible? false: true
         })
     }
 

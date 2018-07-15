@@ -1,10 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
-import './ArticleBox.css';
+import {Link} from 'react-router-dom';
 
 const ArticleBox = ({article}) => {
     return (
-        <div className='article-box'>
+        <div className='box content'>
             <Link to={`/article/${article._id}`}>
                 <h3>{article.title}</h3>
                 <h4>Posted in: {article.belongs_to}</h4>

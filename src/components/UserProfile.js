@@ -16,11 +16,12 @@ class UserProfile extends Component {
         return (
             <div>
                  <div>
-                    <img src={user.avatar_url} alt='User avatar'/>
-                    <h2>{user.username}</h2>
-                    <h4>{user.name}</h4>
+                    <figure className='image is-128x128'>
+                        <img src={user.avatar_url} alt='User avatar'/>
+                    </figure>
+                    <h2>Username: {user.username}</h2>
+                    <h4>Name: {user.name}</h4>
                 </div>
-                <p>---------------------</p>
                 <div>
                     {userArticles.map(article => <ArticleBox key={article._id} article={article}/>)}
                 </div>

@@ -4,14 +4,14 @@ import SearchBar from './SearchBar';
 import NewArticleModal from './NewArticleModal';
 import {Link} from 'react-router-dom';
 import * as api from '../api';
-import './NavBar.css';
 import logo from '../logo.png';
 
 class NavBar extends Component {
     state = {
         postArticleModalVisible: false,
         topics: [],
-        articlesData: []
+        articlesData: [],
+        enableNavbarBurger: false
     }
 
     componentDidMount() {
@@ -21,16 +21,38 @@ class NavBar extends Component {
 
     render() {
         const {currentUser, login, logout} = this.props;
-        const {postArticleModalVisible, topics, articlesData} = this.state;
+        const {postArticleModalVisible, topics, articlesData, enableNavbarBurger} = this.state;
         return (
-            <div className='nav-bar'>
+            <nav className='navbar is-warning'>
                 {postArticleModalVisible && <NewArticleModal enableModal={postArticleModalVisible} hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
-                <Link to='/'><img id='logo' src={logo} alt='website logo' /></Link>
+                <div className='navbar-brand'>
+                    <div className="navbar-item">
+                        <Link to='/'>
+                            <img id='logo' src={logo} alt='website logo' />
+                        </Link>
+                    </div>
+                    <a role="button" className={enableNavbarBurger? 'navbar-burger is-active': 'navbar-burger'} onClick={this.toggleNavbarBurger} aria-label="menu" aria-expanded="false">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
                 <SearchBar articles={articlesData} topics={topics}/>
-                {currentUser.username && <a className='button' onClick={this.showPostArticleModal}>Post Article</a>}
-                <UserSignIn currentUser={currentUser} login={login} logout={logout} />
-            </div>
+                <div className={enableNavbarBurger? 'navbar-menu is-active': 'navbar-menu'}>
+                    <div className='navbar-end'>
+                        {currentUser.username && <a className='navbar-item' onClick={this.showPostArticleModal}>Post Article</a>}
+                        <UserSignIn currentUser={currentUser} login={login} logout={logout} />
+                    </div>
+                    
+                </div>
+            </nav>
         );
+    }
+
+    toggleNavbarBurger = () => {
+        this.setState({
+            enableNavbarBurger: this.state.enableNavbarBurger? false : true
+        })
     }
 
     showPostArticleModal = () => {

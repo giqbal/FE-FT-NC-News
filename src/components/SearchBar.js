@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import {debounce} from 'lodash';
-import './SearchBar.css';
 
 class SearchBar extends Component {
     state = {
@@ -11,8 +10,8 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <div id='search-bar'>
-                <input id='search-input' placeholder='🔍 Articles & Topics' value={this.state.searchInput} onChange={this.handleSearchInput}/>
+            <div className='navbar-item'>
+                <input className='input' id='search-input' placeholder='🔍 Articles & Topics' value={this.state.searchInput} onChange={this.handleSearchInput}/>
                 {this.state.searchResults.map(result => <div key={result._id} onClick={this.clearSearchInput}><Link to={`/${result.itemType}/${result.itemType === 'article'? result._id : result.slug}`}>{`${result.itemType}: ${result.title.substr(0, 100)}...`}</Link></div>)}
             </div>
         );

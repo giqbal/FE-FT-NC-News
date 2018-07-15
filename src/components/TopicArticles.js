@@ -19,7 +19,7 @@ class TopicArticles extends Component {
         const slug = this.props.match.params.topicSlug
         const capitalisedTopic = slug[0].toUpperCase() + slug.slice(1)
         return (
-            <div>
+            <div className='content'>
                 <h2>{capitalisedTopic}</h2>
                 {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>

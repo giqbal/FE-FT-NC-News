@@ -24,7 +24,7 @@ class Article extends Component {
         const {currentUser} = this.props;
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         return (
-            <section>
+            <section className='content'>
                 <h2>{article.title}</h2>
                 <h4>Posted in: <Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></h4>
                 <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
