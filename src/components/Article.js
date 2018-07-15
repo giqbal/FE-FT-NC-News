@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import CommentBox from './CommentBox';
 import Vote from "./Vote";
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import * as api from '../api';
 
 class Article extends Component {
     state = {
         article: {},
         comments: [],
-        commentInput: ''
+        commentInput: '',
+        invalidUrl: false,
+        invalidPost: false
     }
 
     componentDidMount() {
@@ -20,10 +22,12 @@ class Article extends Component {
     }
 
     render() {
-        const {article, commentInput, comments} = this.state
+        const {article, commentInput, comments, invalidUrl, invalidPost} = this.state
         const {currentUser} = this.props;
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
-        return (
+        if (invalidUrl) return <Redirect to='/404'/>
+        else if (invalidPost) return <Redirect to='/400' />
+        else return (
             <section className='content'>
                 <h2>{article.title}</h2>
                 <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
@@ -87,7 +91,11 @@ class Article extends Component {
                     })
                 }
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidPost: true
+                })
+            })
     }
 
     handleCommentInput = ({target}) => {
@@ -104,7 +112,11 @@ class Article extends Component {
                     comments
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidUrl: true
+                })
+            })
     }
 }
 

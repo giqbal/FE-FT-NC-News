@@ -4,6 +4,8 @@ import Article from './components/Article';
 import NavBar from './components/NavBar';
 import UserProfile from './components/UserProfile';
 import TopicArticles from './components/TopicArticles';
+import Error404 from './components/Error404';
+import Error400 from './components/Error400';
 import {Route, Switch} from 'react-router-dom';
 import * as api from './api';
 import './App.css';
@@ -28,6 +30,8 @@ class App extends Component {
           <Route path='/article/:article_id' render={(props) => <Article {...props} currentUser={currentUser}/>}/>
           <Route path='/user/:username' component={UserProfile}/>
           <Route path='/topic/:topicSlug' component={TopicArticles}/>
+          <Route path='/400' component={Error400}/>
+          <Route path='/404' component={Error404}/>
           <Route exact path='/' component={ArticleList} />
         </Switch>
       </div>
