@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import UserSignIn from './UserSignIn';
 import SearchBar from './SearchBar';
 import NewArticleModal from './NewArticleModal';
+import UserContext from '../userContext';
 import {Link} from 'react-router-dom';
 import * as api from '../api';
 import logo from '../logo.png';
@@ -20,11 +21,11 @@ class NavBar extends Component {
     }
 
     render() {
-        const {currentUser, login, logout} = this.props;
+        const {login, logout} = this.props;
         const {postArticleModalVisible, topics, articlesData, enableNavbarBurger} = this.state;
         return (
             <nav className='navbar is-warning'>
-                {postArticleModalVisible && <NewArticleModal enableModal={postArticleModalVisible} hidePostArticleModal={this.hidePostArticleModal} topics={topics} currentUser={currentUser}/>}
+                {postArticleModalVisible && <NewArticleModal enableModal={postArticleModalVisible} hidePostArticleModal={this.hidePostArticleModal} topics={topics}/>}
                 <div className='navbar-brand'>
                     <div className="navbar-item">
                         <Link to='/'>
@@ -40,8 +41,10 @@ class NavBar extends Component {
                 <SearchBar articles={articlesData} topics={topics}/>
                 <div className={enableNavbarBurger? 'navbar-menu is-active': 'navbar-menu'}>
                     <div className='navbar-end'>
-                        {currentUser.username && <a className='navbar-item' onClick={this.showPostArticleModal}>Post Article</a>}
-                        <UserSignIn currentUser={currentUser} login={login} logout={logout} />
+                        <UserContext.Consumer>
+                            {currentUser => currentUser.username && <a className='navbar-item' onClick={this.showPostArticleModal}>Post Article</a>}
+                        </UserContext.Consumer>
+                        <UserSignIn login={login} logout={logout} />
                     </div>
                     
                 </div>
@@ -56,7 +59,6 @@ class NavBar extends Component {
     }
 
     showPostArticleModal = () => {
-        console.log('showing modal')
         this.setState({
           postArticleModalVisible: true
         })

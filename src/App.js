@@ -6,6 +6,7 @@ import UserProfile from './components/UserProfile';
 import TopicArticles from './components/TopicArticles';
 import Error from './components/Error';
 import {Route, Switch} from 'react-router-dom';
+import UserContext from './userContext'
 import * as api from './api';
 import './App.css';
 
@@ -24,14 +25,16 @@ class App extends Component {
     const {currentUser} = this.state;
     return (
       <div className='App'>
-        <NavBar login={this.login} logout={this.logout} currentUser={currentUser}/>
-        <Switch>
-          <Route path='/article/:article_id' render={(props) => <Article {...props} currentUser={currentUser}/>}/>
-          <Route path='/user/:username' component={UserProfile}/>
-          <Route path='/topic/:topicSlug' component={TopicArticles}/>
-          <Route path='/error/:statusCode' component={Error}/>
-          <Route exact path='/' component={ArticleList} />
-        </Switch>
+        <UserContext.Provider value={currentUser}>
+          <NavBar login={this.login} logout={this.logout}/>
+          <Switch>
+            <Route path='/article/:article_id' component={Article}/>
+            <Route path='/user/:username' component={UserProfile}/>
+            <Route path='/topic/:topicSlug' component={TopicArticles}/>
+            <Route path='/error/:statusCode' component={Error}/>
+            <Route exact path='/' component={ArticleList} />
+          </Switch>
+        </UserContext.Provider>
       </div>
     );
   }

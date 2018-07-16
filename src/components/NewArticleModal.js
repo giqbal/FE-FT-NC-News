@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import UserContext from '../userContext';
 import {Redirect} from 'react-router-dom'
 import * as api from '../api';
-// import './NewArticleModal.css';
 
 class NewArticleModal extends Component {
     state = {
@@ -39,7 +39,9 @@ class NewArticleModal extends Component {
                     {invalidPost && <p>Ensure you select a topic, add a title and body to post an article</p>}
                 </section>
                 <footer className="modal-card-foot">
-                    <button className="button is-success" onClick={this.postArticle}>Post</button>
+                    <UserContext.Consumer>
+                        {user => <button className="button is-success" onClick={() => this.postArticle(user)}>Post</button>}
+                    </UserContext.Consumer>
                 </footer>
                 </div>
             </div>
@@ -58,9 +60,9 @@ class NewArticleModal extends Component {
         })
     }
 
-    postArticle = () => {
+    postArticle = (user) => {
         const {selectTopicInput, titleInput, bodyInput} = this.state;
-        api.postArticle(selectTopicInput, titleInput, bodyInput, this.props.currentUser._id)
+        api.postArticle(selectTopicInput, titleInput, bodyInput, user)
             .then(({status, data}) => {
                 if (status === 201) this.setState({
                     postedArticleId: data.article._id

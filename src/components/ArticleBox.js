@@ -10,14 +10,14 @@ const ArticleBox = ({article}) => {
                 <div className='level'>
                     <div className='level-item has-text-centered'>
                         <div>
-                            <p class="heading">Comments</p>
-                            <p class="title">{article.comments}</p>
+                            <p className="heading">Comments</p>
+                            <p className="title">{article.comments}</p>
                         </div>
                     </div>
                     <div className='level-item has-text-centered'>
                         <div>
-                            <p class="heading">Votes</p>
-                            <p class="title">{article.votes}</p>
+                            <p className="heading">Votes</p>
+                            <p className="title">{article.votes}</p>
                         </div>
                     </div>
                 </div>

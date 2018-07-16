@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import UserContext from '../userContext';
 import {Link} from 'react-router-dom';
 
 class UserSignIn extends Component {
@@ -7,9 +8,10 @@ class UserSignIn extends Component {
         loginErrorVisible: false
     }
     render() {
-        const {currentUser, logout} = this.props;
+        const {logout} = this.props;
         return (
-            currentUser.username?
+            <UserContext.Consumer>
+                {currentUser => currentUser.username?
                 <div className='navbar-item'>
                     <figure className='image is-32x32'>
                         <Link to={`/user/${currentUser.username}`}>
@@ -30,7 +32,8 @@ class UserSignIn extends Component {
                         <hr className="navbar-divider"/>
                         <a className='button navbar-item' onClick={this.signInRequestByButton}>Log In</a>
                     </div>
-                </div>
+                </div>}
+            </UserContext.Consumer>
         );
     }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CommentBox from './CommentBox';
 import Vote from "./Vote";
+import UserContext from '../userContext';
 import {Link, Redirect} from 'react-router-dom';
 import * as api from '../api';
 
@@ -23,7 +24,6 @@ class Article extends Component {
 
     render() {
         const {article, commentInput, comments, invalidUrl, invalidPost} = this.state
-        const {currentUser} = this.props;
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         if (invalidUrl) return <Redirect to={{pathname: '/error/404', state:{from: 'article'}}}/>
         else return (
@@ -33,21 +33,27 @@ class Article extends Component {
                     <h4><Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                     <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
                     <p>{article.body}</p>
-                    <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
+                    <UserContext.Consumer>
+                        {user => <Vote votes={article.votes} updateVote={(vote) => this.updateArticleVote(user, vote)}/>}
+                    </UserContext.Consumer>
                 </section>
                 <div className='field box'>
                     <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
-                    {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
-                    {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
+                    <UserContext.Consumer>
+                        {currentUser => currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
+                    </UserContext.Consumer>
+                    <UserContext.Consumer>
+                        {currentUser => currentUser.username && <a className='button' onClick={() => this.postComment(currentUser)}>Share your thoughts</a>}
+                    </UserContext.Consumer>
                     {invalidPost && <p>Can't post an empty comment</p>}  
                 </div>
-                {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
+                {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </div>
         );
     }
 
-    updateArticleVote = (vote) => {
-        this.props.currentUser.username && api.updateVoteCount(this.state.article._id, vote, 'articles')
+    updateArticleVote = (user, vote) => {
+        user.username && api.updateVoteCount(this.state.article._id, vote, 'articles')
             .then(({data: {article}}) => {
                 this.setState({
                     article
@@ -56,8 +62,8 @@ class Article extends Component {
             .catch(console.log)
     }
 
-    updateCommentVote = (commentId, vote) => {
-        this.props.currentUser.username && api.updateVoteCount(commentId, vote, 'comments')
+    updateCommentVote = (user, commentId, vote) => {
+        user.username && api.updateVoteCount(commentId, vote, 'comments')
             .then(({data: {comment}}) => {
                 const updatedComments = this.state.comments.map((existingComment) => comment._id === existingComment._id? comment: existingComment);
                 this.setState({
@@ -80,8 +86,8 @@ class Article extends Component {
             .catch(console.log)
     }
 
-    postComment = (commentBody) => {
-        api.postComment(this.state.article._id, commentBody, this.props.currentUser._id)
+    postComment = (user) => {
+        api.postComment(this.state.article._id, this.state.commentInput, user._id)
             .then(({status}) => {
                 if (status === 201) {
                     return api.getCommentsforArticle(this.state.article._id)
