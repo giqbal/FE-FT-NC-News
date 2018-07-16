@@ -11,7 +11,8 @@ class Article extends Component {
         comments: [],
         commentInput: '',
         invalidUrl: false,
-        invalidPost: false
+        invalidPost: false,
+        invalidComment: false
     }
 
     componentDidMount() {
@@ -23,9 +24,10 @@ class Article extends Component {
     }
 
     render() {
-        const {article, commentInput, comments, invalidUrl, invalidPost} = this.state
+        const {article, commentInput, comments, invalidUrl, invalidPost, invalidComment} = this.state
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         if (invalidUrl) return <Redirect to={{pathname: '/error/404', state:{from: 'article'}}}/>
+        else if (invalidComment) return <Redirect to={{pathname: 'error/404', state: {from: 'comment'}}} />
         else return (
             <div className='section'>
                 <section className='content container box'>
@@ -59,7 +61,11 @@ class Article extends Component {
                     article
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidUrl: true
+                })
+            })
     }
 
     updateCommentVote = (user, commentId, vote) => {
@@ -70,7 +76,11 @@ class Article extends Component {
                     comments: updatedComments
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidComment: true
+                })
+            })
     }
 
     deleteComment = (commentId) => {
@@ -83,7 +93,11 @@ class Article extends Component {
                     })
                 }
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidComment: true
+                })
+            })
     }
 
     postComment = (user) => {

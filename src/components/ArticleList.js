@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import ArticleBox from './ArticleBox';
+import {Redirect} from 'react-router-dom';
 import * as api from '../api';
 
 class ArticleList extends Component {
     state = {
-        articles: []
+        articles: [],
+        fetchArticlesFailed: false
     }
 
     componentDidMount() {
@@ -16,7 +18,8 @@ class ArticleList extends Component {
     } 
 
     render() {
-        return (
+        if (this.state.fetchArticlesFailed) return <Redirect to='/error/500'/>
+        else return (
             <div className='section'>
                 {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>
@@ -30,7 +33,11 @@ class ArticleList extends Component {
                     articles
                 })
         })
-        .catch(console.log);
+        .catch(err => {
+            this.setState({
+                fetchArticlesFailed: true
+            })
+        });
     }
 };
 

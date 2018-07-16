@@ -3,7 +3,7 @@ import UserSignIn from './UserSignIn';
 import SearchBar from './SearchBar';
 import NewArticleModal from './NewArticleModal';
 import UserContext from '../userContext';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import * as api from '../api';
 import logo from '../logo.png';
 
@@ -12,7 +12,8 @@ class NavBar extends Component {
         postArticleModalVisible: false,
         topics: [],
         articlesData: [],
-        enableNavbarBurger: false
+        enableNavbarBurger: false,
+        fetchDataFailed: false
     }
 
     componentDidMount() {
@@ -22,8 +23,9 @@ class NavBar extends Component {
 
     render() {
         const {login, logout} = this.props;
-        const {postArticleModalVisible, topics, articlesData, enableNavbarBurger} = this.state;
-        return (
+        const {postArticleModalVisible, topics, articlesData, enableNavbarBurger, fetchDataFailed} = this.state;
+        if (fetchDataFailed) return <Redirect to='/error/500' />
+        else return (
             <nav className='navbar is-warning'>
                 {postArticleModalVisible && <NewArticleModal enableModal={postArticleModalVisible} hidePostArticleModal={this.hidePostArticleModal} topics={topics}/>}
                 <div className='navbar-brand'>
@@ -77,7 +79,11 @@ class NavBar extends Component {
                     topics
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    fetchDataFailed: true
+                })
+            })
     }
 
     fetchArticlesData = () => {
@@ -91,7 +97,11 @@ class NavBar extends Component {
                     articlesData
                 })
         })
-        .catch(console.log);
+        .catch(err => {
+            this.setState({
+                fetchDataFailed: true
+            })
+        })
     }
 }
 
