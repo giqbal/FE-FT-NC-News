@@ -16,7 +16,11 @@ class ArticleList extends Component {
     } 
 
     render() {
-        return this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)
+        return (
+            <div className='section'>
+                {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
+            </div>
+        )
     }
     
     fetchArticles = () => {

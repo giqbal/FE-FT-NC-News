@@ -27,16 +27,16 @@ class Article extends Component {
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         if (invalidUrl) return <Redirect to={{pathname: '/error/404', state:{from: 'article'}}}/>
         else return (
-            <div>
-                <section className='content'>
+            <div className='section'>
+                <section className='content container box'>
                     <h2>{article.title}</h2>
                     <h4><Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
                     <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
                     <p>{article.body}</p>
                     <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
-                    <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
                 </section>
-                <div className='field'>
+                <div className='field box'>
+                    <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
                     {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
                     {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
                     {invalidPost && <p>Can't post an empty comment</p>}  
