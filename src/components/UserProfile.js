@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
-import * as api from '../api';
 import ArticleBox from './ArticleBox';
+import {Redirect} from 'react-router-dom'
+import * as api from '../api';
+
 
 class UserProfile extends Component {
     state = {
         user: {},
-        userArticles: []
+        userArticles: [],
+        invalidUser: false
     }
     componentDidMount() {
         this.fetchUserProfileData(this.props.match.params.username)
     }
     render() {
-        const {user, userArticles} = this.state
-        
-        return (
+        const {user, userArticles, invalidUser} = this.state
+        if (invalidUser) return <Redirect to={{pathname: '/error/404', state: {from: 'user'}}} />
+        else return (
             <div>
                  <div className='card'>
                     <div className='card-image'>
@@ -42,7 +45,11 @@ class UserProfile extends Component {
                     userArticles: articles.filter(article => article.created_by === user.username)
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidUser: true
+                })
+            })
     }
 }
 

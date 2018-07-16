@@ -26,9 +26,9 @@ class UserSignIn extends Component {
                     <div className="navbar-dropdown is-right is-boxed">
                         <label htmlFor='usernameInput'>Username</label>
                         <input className='input navbar-item' type='text' id='usernameInput' value={this.state.usernameInput} placeholder='username' onChange={this.handleUsernameInput} onKeyUp={this.signInRequestByEnterKey} />
+                        {this.state.loginErrorVisible && <p className='navbar-item'>Incorrect username</p>}
                         <hr className="navbar-divider"/>
                         <a className='button navbar-item' onClick={this.signInRequestByButton}>Log In</a>
-                        {this.state.loginErrorVisible && <p>Incorrect username</p>}
                     </div>
                 </div>
         );
@@ -62,11 +62,9 @@ class UserSignIn extends Component {
                 })
             })
             .catch(err => {
-                if (err) {
                     this.setState({
                         loginErrorVisible: true
                     })
-                }
             })
     }
 }

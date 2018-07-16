@@ -8,12 +8,13 @@ class NewArticleModal extends Component {
         titleInput: '',
         bodyInput: '',
         selectTopicInput: 'none',
-        postedArticleId: ''
+        postedArticleId: '',
+        invalidPost: false
     }
 
     render() {
         const {topics, hidePostArticleModal, enableModal} = this.props; 
-        const {titleInput, bodyInput, postedArticleId} = this.state;
+        const {titleInput, bodyInput, postedArticleId, invalidPost} = this.state;
         return (
             postedArticleId?
             <Redirect to={`/article/${postedArticleId}`}/> :
@@ -35,6 +36,7 @@ class NewArticleModal extends Component {
                     <input className='input' type='text' value={titleInput} id='titleInput' placeholder='Post Title' onChange={this.handleUserTextInput} />
                     <label className="label">Body</label>
                     <textarea id='bodyInput' className="textarea" onChange={this.handleUserTextInput} value={bodyInput} placeholder="Rant..."></textarea>
+                    {invalidPost && <p>Ensure you select a topic, add a title and body to post an article</p>}
                 </section>
                 <footer className="modal-card-foot">
                     <button className="button is-success" onClick={this.postArticle}>Post</button>
@@ -42,19 +44,6 @@ class NewArticleModal extends Component {
                 </div>
             </div>
         )
-
-
-
-        
-        // return (
-        //    
-        //     <div className='modal'>
-        //         <div className='modal-content'>
-        //             <span >ⓧ</span>
-                    
-        //         </div>
-        //     </div>
-        // );
     }
 
     handleUserTextInput = ({target}) => {
@@ -77,7 +66,11 @@ class NewArticleModal extends Component {
                     postedArticleId: data.article._id
                 })
             })
-            .catch(console.log)
+            .catch(err => {
+                this.setState({
+                    invalidPost: true
+                })
+            })
     }
 
 }

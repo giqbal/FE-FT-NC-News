@@ -25,20 +25,24 @@ class Article extends Component {
         const {article, commentInput, comments, invalidUrl, invalidPost} = this.state
         const {currentUser} = this.props;
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
-        if (invalidUrl) return <Redirect to='/404'/>
-        else if (invalidPost) return <Redirect to='/400' />
+        if (invalidUrl) return <Redirect to={{pathname: '/error/404', state:{from: 'article'}}}/>
         else return (
-            <section className='content'>
-                <h2>{article.title}</h2>
-                <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
-                <h4>Article by: <Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
-                <p>{article.body}</p>
-                <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
-                <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
-                {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
-                {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
+            <div>
+                <section className='content'>
+                    <h2>{article.title}</h2>
+                    <h4><Link to={`/user/${article.created_by}`}>{article.created_by}</Link></h4>
+                    <span className='tag'><Link to={`/topic/${article.belongs_to}`}>{article.belongs_to}</Link></span>
+                    <p>{article.body}</p>
+                    <Vote votes={article.votes} updateVote={this.updateArticleVote}/>
+                    <p>----------<span role='img' aria-label='comment'>💬</span>----------</p>
+                </section>
+                <div className='field'>
+                    {currentUser.username && <textarea className='textarea' type='text' placeholder='Comment...' onChange={this.handleCommentInput} value={commentInput}/>}
+                    {currentUser.username && <a className='button' onClick={() => this.postComment(commentInput)}>Share your thoughts</a>}
+                    {invalidPost && <p>Can't post an empty comment</p>}  
+                </div>
                 {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} currentUser={currentUser} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
-            </section>
+            </div>
         );
     }
 
