@@ -19,10 +19,13 @@ class ArticleList extends Component {
 
     render() {
         if (this.state.fetchArticlesFailed) return <Redirect to='/error/500'/>
-        else return (
+        else return (this.state.articles.length? 
             <div className='section'>
                 {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
-            </div>
+            </div> :
+            <span class="icon">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </span>
         )
     }
     

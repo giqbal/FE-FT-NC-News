@@ -21,11 +21,15 @@ class TopicArticles extends Component {
         const slug = this.props.match.params.topicSlug
         const capitalisedTopic = slug[0].toUpperCase() + slug.slice(1)
         if (this.state.invalidTopic) return <Redirect to={{pathname: '/error/404', state: {from: 'topic'}}}/>
-        else return (
+        else return (this.state.articles.length?
             <div className='content'>
                 <h2>{capitalisedTopic}</h2>
                 {this.state.articles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>
+            :
+            <span class="icon">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </span>
         );
     }
 

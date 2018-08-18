@@ -16,7 +16,7 @@ class UserProfile extends Component {
     render() {
         const {user, userArticles, invalidUser} = this.state
         if (invalidUser) return <Redirect to={{pathname: '/error/404', state: {from: 'user'}}} />
-        else return (
+        else return (Object.keys(user).length?
             <div>
                  <div className='card'>
                     <div className='card-image'>
@@ -31,6 +31,10 @@ class UserProfile extends Component {
                 </div>
                 {userArticles.map(article => <ArticleBox key={article._id} article={article}/>)}
             </div>
+            :
+            <span class="icon">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </span>
         );
     }
 

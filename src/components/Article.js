@@ -28,7 +28,7 @@ class Article extends Component {
         const sortedCommentsByTime = [...comments].sort((a, b) => b.created_at - a.created_at);
         if (invalidUrl) return <Redirect to={{pathname: '/error/404', state:{from: 'article'}}}/>
         else if (invalidComment) return <Redirect to={{pathname: 'error/404', state: {from: 'comment'}}} />
-        else return (
+        else return (Object.keys(article).length?
             <div className='section'>
                 <section className='content container box'>
                     <h2>{article.title}</h2>
@@ -51,6 +51,10 @@ class Article extends Component {
                 </div>
                 {sortedCommentsByTime.map(comment => <CommentBox key={comment._id} deleteComment={this.deleteComment} comment={comment} updateCommentVote={this.updateCommentVote}/>)}
             </div>
+            :
+            <span class="icon">
+                <i class="fas fa-spinner fa-pulse"></i>
+            </span>
         );
     }
 
